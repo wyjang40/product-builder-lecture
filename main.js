@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameBoard = document.getElementById('game-board');
     const timerElement = document.getElementById('timer');
     const mineCounterElement = document.getElementById('mine-counter');
+    const themeToggle = document.getElementById('theme-toggle');
 
     let gridSize;
     let numMines;
@@ -18,6 +19,29 @@ document.addEventListener('DOMContentLoaded', () => {
         medium: { gridSize: 16, numMines: 40 },
         hard: { gridSize: 22, numMines: 99 },
     };
+
+    function getPreferredTheme() {
+        const savedTheme = localStorage.getItem('minesweeper-theme');
+        if (savedTheme === 'dark' || savedTheme === 'light') {
+            return savedTheme;
+        }
+
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function applyTheme(theme) {
+        const isDark = theme === 'dark';
+        document.body.classList.toggle('dark-theme', isDark);
+        document.documentElement.style.colorScheme = theme;
+        themeToggle.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+        themeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+
+    function toggleTheme() {
+        const nextTheme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
+        localStorage.setItem('minesweeper-theme', nextTheme);
+        applyTheme(nextTheme);
+    }
 
     function init() {
         const difficulty = difficultySelect.value;
@@ -195,6 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     newGameButton.addEventListener('click', init);
     difficultySelect.addEventListener('change', init);
+    themeToggle.addEventListener('click', toggleTheme);
 
+    applyTheme(getPreferredTheme());
     init();
 });
