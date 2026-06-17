@@ -1,1 +1,45 @@
-/* Add styles here */
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.controls {
+    margin-bottom: 1rem;
+}
+
+.status {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    margin-bottom: 1rem;
+}
+
+#game-board {
+    display: grid;
+    border: 1px solid black;
+}
+
+.cell {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #eee;
+    cursor: pointer;
+}
+
+.cell.revealed {
+    background-color: #fff;
+}
+
+.cell.mine {
+    background-color: red;
+}
+
+.cell.flagged {
+    background-color: yellow;
+}
