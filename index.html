@@ -23,6 +23,24 @@
         <div id="mine-counter">Mines: 10</div>
     </div>
     <div id="game-board"></div>
+    <section class="partner-contact" aria-labelledby="partner-contact-title">
+        <h2 id="partner-contact-title">Partnership Inquiry</h2>
+        <form action="https://formspree.io/f/xlgkkrap" method="POST">
+            <label for="partner-name">Name</label>
+            <input id="partner-name" name="name" type="text" autocomplete="name" required>
+
+            <label for="partner-email">Email</label>
+            <input id="partner-email" name="email" type="email" autocomplete="email" required>
+
+            <label for="partner-company">Company</label>
+            <input id="partner-company" name="company" type="text" autocomplete="organization">
+
+            <label for="partner-message">Message</label>
+            <textarea id="partner-message" name="message" rows="5" required></textarea>
+
+            <button type="submit">Send Inquiry</button>
+        </form>
+    </section>
     <script src="main.js"></script>
 </body>
 </html>
