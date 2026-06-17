@@ -8,6 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('theme-toggle');
     const leaderboardList = document.getElementById('leaderboard-list');
     const clearRecordsButton = document.getElementById('clear-records');
+    const practiceBoard = document.getElementById('practice-board');
+    const practiceCount = document.getElementById('practice-count');
+    const practiceQuestion = document.getElementById('practice-question');
+    const practiceDescription = document.getElementById('practice-description');
+    const practiceOptions = document.getElementById('practice-options');
+    const practiceFeedback = document.getElementById('practice-feedback');
+    const nextPracticeButton = document.getElementById('next-practice');
 
     if (!difficultySelect || !newGameButton || !gameBoard || !timerElement || !mineCounterElement || !themeToggle) {
         return;
@@ -23,12 +30,94 @@ document.addEventListener('DOMContentLoaded', () => {
     let firstMove = true;
     let pressTimer;
     const leaderboardKey = 'minesweeper-leaderboard-v1';
+    let currentPracticeIndex = 0;
 
     const difficulties = {
         easy: { gridSize: 9, numMines: 10 },
         medium: { gridSize: 16, numMines: 40 },
         hard: { gridSize: 22, numMines: 99 },
     };
+
+
+    const practiceItems = [
+        {
+            question: '1 주변에 닫힌 칸이 하나만 남았습니다. 무엇을 해야 할까요?',
+            description: '숫자 1은 주변 8칸 중 지뢰가 정확히 1개라는 뜻입니다.',
+            board: ['1', '1', '0', '0', '?', '0', '0', '0', '0'],
+            options: ['닫힌 칸에 깃발을 표시한다', '닫힌 칸을 연다', '아무 칸이나 새로 연다'],
+            answer: 0,
+            feedback: '정답입니다. 숫자 1 주변에 남은 닫힌 칸이 하나뿐이면 그 칸은 지뢰입니다.',
+        },
+        {
+            question: '숫자 2 주변에 이미 깃발 2개가 있습니다. 나머지 닫힌 칸은?',
+            description: '숫자와 맞닿은 깃발 수가 이미 숫자와 같다면 남은 주변 칸은 안전합니다.',
+            board: ['F', '2', 'F', '?', '?', '1', '0', '0', '0'],
+            options: ['나머지 닫힌 칸을 안전하게 연다', '깃발을 하나 더 꽂는다', '무조건 새 게임을 시작한다'],
+            answer: 0,
+            feedback: '정답입니다. 숫자 2의 조건은 이미 깃발 2개로 충족되었으므로 다른 주변 닫힌 칸은 안전합니다.',
+        },
+        {
+            question: '1-2-1 패턴이 닫힌 줄과 나란히 있습니다. 보통 어느 쪽이 지뢰일까요?',
+            description: '전형적인 1-2-1 형태에서는 양끝 후보가 지뢰가 되는 경우가 많습니다.',
+            board: ['1', '2', '1', '?', '?', '?', '0', '0', '0'],
+            options: ['가운데 후보만 지뢰', '양끝 후보가 지뢰', '세 칸 모두 안전'],
+            answer: 1,
+            feedback: '정답입니다. 1-2-1의 가운데 숫자 2는 양쪽 지뢰를 요구하고, 양끝 1도 그 조건과 맞습니다.',
+        },
+        {
+            question: '확정 조건을 찾지 못했습니다. 다음으로 좋은 행동은?',
+            description: '찍기 전에 남은 지뢰 수, 깃발 수, 닫힌 칸 묶음을 다시 비교해야 합니다.',
+            board: ['2', '?', '?', '1', '?', '2', '0', '1', '?'],
+            options: ['가장 느낌이 좋은 칸을 클릭한다', '인접 숫자의 닫힌 칸 묶음을 비교한다', '모든 깃발을 지운다'],
+            answer: 1,
+            feedback: '정답입니다. 확률 선택 전에 인접 숫자들이 공유하는 후보 칸을 비교하면 확정 조건이 나올 수 있습니다.',
+        },
+    ];
+
+
+    function renderPractice() {
+        if (!practiceBoard || !practiceOptions || !practiceQuestion || !practiceDescription || !practiceFeedback || !practiceCount) {
+            return;
+        }
+
+        const item = practiceItems[currentPracticeIndex];
+        practiceCount.textContent = `문제 ${currentPracticeIndex + 1} / ${practiceItems.length}`;
+        practiceQuestion.textContent = item.question;
+        practiceDescription.textContent = item.description;
+        practiceFeedback.textContent = '정답을 선택하면 해설이 표시됩니다.';
+        practiceFeedback.classList.remove('is-correct', 'is-wrong');
+        practiceBoard.innerHTML = '';
+        practiceOptions.innerHTML = '';
+
+        item.board.forEach((value) => {
+            const cell = document.createElement('span');
+            cell.textContent = value === '0' ? '' : value;
+            cell.className = value === '?' ? 'practice-cell unknown' : 'practice-cell revealed';
+            if (value === 'F') cell.className = 'practice-cell flagged';
+            practiceBoard.appendChild(cell);
+        });
+
+        item.options.forEach((option, index) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.textContent = option;
+            button.addEventListener('click', () => checkPracticeAnswer(index));
+            practiceOptions.appendChild(button);
+        });
+    }
+
+    function checkPracticeAnswer(selectedIndex) {
+        const item = practiceItems[currentPracticeIndex];
+        const isCorrect = selectedIndex === item.answer;
+        practiceFeedback.textContent = isCorrect ? item.feedback : `다시 생각해 보세요. ${item.feedback}`;
+        practiceFeedback.classList.toggle('is-correct', isCorrect);
+        practiceFeedback.classList.toggle('is-wrong', !isCorrect);
+    }
+
+    function nextPractice() {
+        currentPracticeIndex = (currentPracticeIndex + 1) % practiceItems.length;
+        renderPractice();
+    }
 
     function getPreferredTheme() {
         const savedTheme = localStorage.getItem('minesweeper-theme');
@@ -74,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mineCounterElement.textContent = `지뢰 ${minesRemaining}`;
         setMessage('첫 칸을 열어보세요.');
         renderLeaderboard();
+        renderPractice();
 
         createBoard();
         renderBoard();
@@ -441,6 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
     difficultySelect.addEventListener('change', init);
     themeToggle.addEventListener('click', toggleTheme);
     clearRecordsButton?.addEventListener('click', clearCurrentRecords);
+    nextPracticeButton?.addEventListener('click', nextPractice);
 
     applyTheme(getPreferredTheme());
     init();

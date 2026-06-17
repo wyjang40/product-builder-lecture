@@ -220,6 +220,9 @@ button:hover {
 .game-panel,
 .quick-guide,
 .leaderboard,
+.practice-card,
+.activity-list,
+.resource-grid article,
 .article-grid article,
 .strategy-list article,
 .faq-list details {
@@ -361,6 +364,8 @@ textarea {
 
 .quick-guide h3,
 .leaderboard h3,
+.activity-list h3,
+.resource-grid h3,
 .article-grid h3,
 .strategy-list h3 {
     margin-top: 0;
@@ -459,6 +464,147 @@ textarea {
     text-align: center;
 }
 
+.practice-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 24px;
+    align-items: start;
+}
+
+.practice-card {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 24px;
+    padding: 20px;
+}
+
+.practice-board {
+    display: grid;
+    grid-template-columns: repeat(3, 56px);
+    gap: 6px;
+    align-content: start;
+}
+
+.practice-cell {
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--cell-border);
+    background: var(--revealed-bg);
+    color: var(--cell-text);
+    font-weight: 800;
+}
+
+.practice-cell.unknown {
+    background: var(--cell-bg);
+}
+
+.practice-cell.flagged {
+    background: var(--flagged-bg);
+    color: #1f2933;
+}
+
+.practice-copy h3 {
+    margin: 0 0 8px;
+    font-size: 1.35rem;
+}
+
+.practice-options {
+    display: grid;
+    gap: 8px;
+    margin: 16px 0;
+}
+
+.practice-options button {
+    width: 100%;
+    justify-content: flex-start;
+    background: var(--surface-strong);
+    border-color: var(--border);
+    color: var(--text-color);
+    text-align: left;
+}
+
+.practice-options button:hover {
+    background: var(--button-bg);
+    color: var(--button-text);
+}
+
+.practice-feedback {
+    min-height: 54px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface-strong);
+    color: var(--muted-text);
+}
+
+.practice-feedback.is-correct {
+    border-color: #15803d;
+    color: #15803d;
+}
+
+.practice-feedback.is-wrong {
+    border-color: #b45309;
+    color: var(--accent);
+}
+
+.activity-list {
+    padding: 18px;
+}
+
+.activity-list ol,
+.resource-grid ul,
+.check-list,
+.rich-list {
+    padding-left: 20px;
+}
+
+.activity-list li,
+.resource-grid li,
+.check-list li,
+.rich-list li {
+    margin-bottom: 8px;
+    color: var(--muted-text);
+}
+
+.resource-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.resource-grid.compact {
+    margin-top: 16px;
+}
+
+.resource-grid article {
+    padding: 20px;
+}
+
+.resource-grid dl {
+    margin: 0;
+}
+
+.resource-grid dt {
+    margin-top: 12px;
+    font-weight: 800;
+}
+
+.resource-grid dd {
+    margin: 4px 0 0;
+    color: var(--muted-text);
+}
+
+.more-link {
+    margin-top: 22px;
+    font-weight: 800;
+}
+
+.resource-page section {
+    margin-top: 36px;
+}
+
 .article-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -547,7 +693,10 @@ textarea {
 @media (max-width: 860px) {
     .hero,
     .game-shell,
-    .article-grid {
+    .article-grid,
+    .practice-shell,
+    .practice-card,
+    .resource-grid {
         grid-template-columns: 1fr;
     }
 
@@ -563,6 +712,16 @@ textarea {
     }
 
     .hero-board span {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+    }
+
+    .practice-board {
+        grid-template-columns: repeat(3, minmax(44px, 56px));
+    }
+
+    .practice-cell {
         width: 100%;
         height: auto;
         aspect-ratio: 1;
