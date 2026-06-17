@@ -219,6 +219,7 @@ button:hover {
 
 .game-panel,
 .quick-guide,
+.leaderboard,
 .article-grid article,
 .strategy-list article,
 .faq-list details {
@@ -348,11 +349,18 @@ textarea {
     color: #1f2933;
 }
 
-.quick-guide {
+.side-column {
+    display: grid;
+    gap: 18px;
+}
+
+.quick-guide,
+.leaderboard {
     padding: 18px;
 }
 
 .quick-guide h3,
+.leaderboard h3,
 .article-grid h3,
 .strategy-list h3 {
     margin-top: 0;
@@ -361,6 +369,94 @@ textarea {
 .quick-guide ul {
     margin: 0;
     padding-left: 20px;
+}
+
+.leaderboard-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.leaderboard-header h3 {
+    margin-bottom: 0;
+}
+
+#clear-records {
+    min-height: 34px;
+    padding: 0 10px;
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+#clear-records:hover {
+    background: var(--surface-strong);
+}
+
+.leaderboard-note {
+    margin: 8px 0 14px;
+    color: var(--muted-text);
+    font-size: 0.92rem;
+}
+
+.leaderboard-list {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.leaderboard-list li {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+    min-height: 38px;
+    padding: 8px 10px;
+    background: var(--surface-strong);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.92rem;
+}
+
+.leaderboard-list .rank {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-weight: 800;
+}
+
+.leaderboard-list .player {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 700;
+}
+
+.leaderboard-list .record-time {
+    font-weight: 800;
+    color: var(--accent);
+}
+
+.leaderboard-list .record-date {
+    grid-column: 2 / 4;
+    color: var(--muted-text);
+    font-size: 0.82rem;
+}
+
+.leaderboard-list .leaderboard-empty {
+    display: block;
+    color: var(--muted-text);
+    text-align: center;
 }
 
 .article-grid {

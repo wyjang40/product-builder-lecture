@@ -16,6 +16,7 @@
             <a class="brand" href="index.html">지뢰찾기 연구소</a>
             <div class="nav-links">
                 <a href="#play">게임</a>
+                <a href="#leaderboard">기록</a>
                 <a href="#guide">가이드</a>
                 <a href="#strategy">전략</a>
                 <a href="#faq">FAQ</a>
@@ -71,14 +72,28 @@
                     </div>
                 </div>
 
-                <aside class="quick-guide" aria-labelledby="quick-guide-title">
-                    <h3 id="quick-guide-title">빠른 규칙</h3>
-                    <ul>
-                        <li>숫자는 주변 8칸에 숨어 있는 지뢰 수를 뜻합니다.</li>
-                        <li>지뢰라고 확신한 칸은 깃발로 표시합니다.</li>
-                        <li>숫자와 맞닿은 미확인 칸 수가 숫자와 같으면 모두 지뢰입니다.</li>
-                        <li>표시한 지뢰 수가 숫자와 같으면 나머지 칸은 안전합니다.</li>
-                    </ul>
+                <aside class="side-column">
+                    <section class="quick-guide" aria-labelledby="quick-guide-title">
+                        <h3 id="quick-guide-title">빠른 규칙</h3>
+                        <ul>
+                            <li>숫자는 주변 8칸에 숨어 있는 지뢰 수를 뜻합니다.</li>
+                            <li>지뢰라고 확신한 칸은 깃발로 표시합니다.</li>
+                            <li>숫자와 맞닿은 미확인 칸 수가 숫자와 같으면 모두 지뢰입니다.</li>
+                            <li>표시한 지뢰 수가 숫자와 같으면 나머지 칸은 안전합니다.</li>
+                        </ul>
+                    </section>
+
+                    <section id="leaderboard" class="leaderboard" aria-labelledby="leaderboard-title">
+                        <div class="leaderboard-header">
+                            <div>
+                                <p class="eyebrow">Top 20</p>
+                                <h3 id="leaderboard-title">빠른 기록</h3>
+                            </div>
+                            <button id="clear-records" type="button">초기화</button>
+                        </div>
+                        <p class="leaderboard-note">이 브라우저에 저장된 난이도별 최고 기록입니다.</p>
+                        <ol id="leaderboard-list" class="leaderboard-list" aria-live="polite"></ol>
+                    </section>
                 </aside>
             </div>
         </section>
